@@ -1,0 +1,4 @@
+codespace
+codespaces-e6238d
+14/09/2026
+/workspaces/scripting-for-cybersecurity/lab02/logs
