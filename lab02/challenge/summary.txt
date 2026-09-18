@@ -1,0 +1,8 @@
+Cybersecurity CLI Report
+User: whoami
+Host: hostname
+Directory: pwd
+Python: which python3
+python filenames found: grep python3 | filenames
+
+
