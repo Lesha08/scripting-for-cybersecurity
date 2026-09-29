@@ -1,0 +1,6 @@
+ server=web01
+-port=80
++port=443
+ logging=enabled
+-timeout=30
++timeout=60
