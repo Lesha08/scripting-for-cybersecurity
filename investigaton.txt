@@ -1,0 +1,51 @@
+1. Top attackers
+Collected log:
+Top attacker: [IP]
+Top three attackers:
+[IP 1]
+[IP 2]
+[IP 3]
+Server log:
+Top attacker: [IP]
+Top three attackers:
+[IP 1]
+[IP 2]
+[IP 3]
+The rankings are the same. The collected log alone would
+have given the correct answer to "who attacked most?" 
+because of missing events and different time ranges.
+
+2. Targeted usernames
+The complete list was obtained using an extraction that handles both
+"Failed password for USER" and "Failed password for invalid user USER".
+The word "invalid" appeared as a username because the original pipeline
+assumed that the word immediately following "for" was always the username.
+On lines containing "for invalid user USER", that assumption is false:
+"invalid" is a status/descriptor and USER is the actual targeted username.
+Failed password ... from IP
+
+3. attacker_report.sh and access.log
+The output is [wrong/empty/not meaningful] because access.log does not use
+the same format as the SSH authentication log. The script assumes events
+contain "Failed password" and extracts IP addresses using SSH log fields.
+Those assumptions do not necessarily hold for a web access log.
+I would change the script so that it detects/parses the log format first,
+or provide separate parsing logic for access.log. For an access log, the
+source IP should be taken from the appropriate access-log field rather than
+searching for the SSH "from" field.
+
+4. Firewall and auth.log
+
+Two of the top SSH attacker IPs appear in the firewall log as blocked on
+port 22, but they also appear in auth.log.
+Possible explanation 1:
+The authentication attempts occurred before the firewall rule was
+activated. The firewall subsequently blocked later attempts from the
+same IP, while the earlier attempts remained recorded in auth.log.
+Possible explanation 2:
+The firewall rule did not block every connection from that IP. It may
+have blocked particular traffic matching the rule (for example, traffic
+to port 22) while other attempts were permitted or had already reached
+the SSH service. Therefore seeing an IP in both logs does not necessarily
+mean the firewall failed to block the connection that generated every
+auth.log entry.

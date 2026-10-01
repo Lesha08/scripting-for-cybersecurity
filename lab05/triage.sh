@@ -43,4 +43,3 @@ file "$CASE_DIR"/evidence/* >> "$REPORT"
 echo "" >> "$REPORT"
 
 echo "Scripts (Python + shell): $SCRIPTS" >> "$REPORT"
-
